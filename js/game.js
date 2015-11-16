@@ -443,12 +443,12 @@
       var lineHeight = 25;
       line = '';
 
-      for (var n = 0; n < countWords; n++) {
-        var testLine = line + words[n] + ' ';
-        var testWidth = this.ctx.measureText(testLine).width;
+      for (var k = 0; k < countWords; k++) {
+        testLine = line + words[k] + ' ';
+        testWidth = this.ctx.measureText(testLine).width;
         if (testWidth > maxWidth) {
           this.ctx.fillText(line, marginLeft, marginTop);
-          line = words[n] + ' ';
+          line = words[k] + ' ';
           marginTop += lineHeight;
         }else {
           line = testLine;
