@@ -401,7 +401,7 @@
     _myDrawFunction: function(text, maxWidth) {
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(300, 110); 
+      this.ctx.moveTo(300, 110);
       this.ctx.lineTo(610, 110);
       this.ctx.lineTo(610, 230);
       this.ctx.lineTo(310, 250);
@@ -411,7 +411,7 @@
       this.ctx.strokeStyle = '#000';
       this.ctx.fillStyle = '#fff';
       this.ctx.beginPath();
-      this.ctx.moveTo(310, 100); 
+      this.ctx.moveTo(310, 100);
       this.ctx.lineTo(600, 100);
       this.ctx.lineTo(600, 220);
       this.ctx.lineTo(300, 240);
