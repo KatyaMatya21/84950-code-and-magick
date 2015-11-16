@@ -399,12 +399,30 @@
     },
 
     _myDrawFunction: function(text, maxWidth) {
+      var srtNumb = 1;
+      var line = '';
+      var words = text.split(' ');
+      var countWords = words.length;
+      this.ctx.font = '16px PT Mono';
+
+      for (var n = 0; n < countWords; n++) {
+        var testLine = line + words[n] + ' ';
+        var testWidth = this.ctx.measureText(testLine).width;
+        if (testWidth > maxWidth) {
+          line = words[n] + ' ';
+          srtNumb = srtNumb + 1;
+        }else {
+          line = testLine;
+        }
+      }
+
+      var canvasH = 20 + 20 + 25 * srtNumb - 25;
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
-      this.ctx.moveTo(300, 110);
+      this.ctx.moveTo(320, 110);
       this.ctx.lineTo(610, 110);
-      this.ctx.lineTo(610, 230);
-      this.ctx.lineTo(310, 250);
+      this.ctx.lineTo(610, 110 + canvasH);
+      this.ctx.lineTo(310, 110 + canvasH + 20);
       this.ctx.lineTo(320, 110);
       this.ctx.closePath();
       this.ctx.fill();
@@ -413,20 +431,17 @@
       this.ctx.beginPath();
       this.ctx.moveTo(310, 100);
       this.ctx.lineTo(600, 100);
-      this.ctx.lineTo(600, 220);
-      this.ctx.lineTo(300, 240);
+      this.ctx.lineTo(600, 100 + canvasH);
+      this.ctx.lineTo(300, 100 + canvasH + 20);
       this.ctx.lineTo(310, 100);
       this.ctx.closePath();
       this.ctx.fill();
       this.ctx.stroke();
       this.ctx.fillStyle = '#000';
-      this.ctx.font = '16px PT Mono';
-      var line = '';
       var marginLeft = 330;
       var marginTop = 130;
       var lineHeight = 25;
-      var words = text.split(' ');
-      var countWords = words.length;
+      line = '';
 
       for (var n = 0; n < countWords; n++) {
         var testLine = line + words[n] + ' ';
