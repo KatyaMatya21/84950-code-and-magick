@@ -382,74 +382,73 @@
         case Verdict.WIN:
           console.log('you have won!');
           var maxWidth = 250;
-            var text  = 'Congratulations! Amazing! You are a true wizard!';
-            this._myDrawFunction(text, maxWidth);
+          var text  = 'Congratulations! Amazing! You are a true wizard!';
+          this._myDrawFunction(text, maxWidth);
           break;
         case Verdict.FAIL:
           console.log('you have failed!');
           var maxWidth = 250;
-            var text  = 'Keep calm and try again! You FAILED!';
-            this._myDrawFunction(text, maxWidth);
+          var text  = 'Keep calm and try again! You FAILED!';
+          this._myDrawFunction(text, maxWidth);
           break;
         case Verdict.PAUSE:
           console.log('game is on pause!');
           var maxWidth = 250;
-            var text  = 'Oops! Game on pause. Press Space to return';
-            this._myDrawFunction(text, maxWidth);
+          var text  = 'Oops! Game on pause. Press Space to return';
+          this._myDrawFunction(text, maxWidth);
           break;
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
-            var maxWidth = 250;
-            var text  = 'Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start';
-            this._myDrawFunction(text, maxWidth);
+          var maxWidth = 250;
+          var text  = 'Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start';
+          this._myDrawFunction(text, maxWidth);
           break;
       }
     },
 
-    _myDrawFunction: function(text, maxWidth){
+    _myDrawFunction: function(text, maxWidth) {
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      this.ctx.beginPath(); // начало отрисовки черного 
-      this.ctx.moveTo(300,110); 
-      this.ctx.lineTo(610,110);
-      this.ctx.lineTo(610,230);
-      this.ctx.lineTo(310,250);
-      this.ctx.lineTo(320,110);
-      this.ctx.closePath(); // конец отрисовки черного
+      this.ctx.beginPath();
+      this.ctx.moveTo(300, 110); 
+      this.ctx.lineTo(610, 110);
+      this.ctx.lineTo(610, 230);
+      this.ctx.lineTo(310, 250);
+      this.ctx.lineTo(320, 110);
+      this.ctx.closePath();
       this.ctx.fill();
 
       this.ctx.strokeStyle = '#000';
       this.ctx.fillStyle = '#fff';
-      this.ctx.beginPath(); // начало отрисовки белого
-      this.ctx.moveTo(310,100); 
-      this.ctx.lineTo(600,100);
-      this.ctx.lineTo(600,220);
-      this.ctx.lineTo(300,240);
-      this.ctx.lineTo(310,100);
-      this.ctx.closePath(); // конец отрисовки белого
+      this.ctx.beginPath();
+      this.ctx.moveTo(310, 100); 
+      this.ctx.lineTo(600, 100);
+      this.ctx.lineTo(600, 220);
+      this.ctx.lineTo(300, 240);
+      this.ctx.lineTo(310, 100);
+      this.ctx.closePath();
       this.ctx.fill();
       this.ctx.stroke();
 
-      this.ctx.fillStyle = '#000'; // текст
+      this.ctx.fillStyle = '#000';
       this.ctx.font = '16px PT Mono';
-      var line = "";
+      var line = '';
       var marginLeft = 330;
       var marginTop = 130;
       var lineHeight = 25;
-      var words = text.split(" ");
+      var words = text.split(' ');
       var countWords = words.length;
 
       for (var n = 0; n < countWords; n++) {
-            var testLine = line + words[n] + " ";
-            var testWidth = this.ctx.measureText(testLine).width;
-            if (testWidth > maxWidth) {
-                this.ctx.fillText(line, marginLeft, marginTop);
-                line = words[n] + " ";
-                marginTop += lineHeight;
-            }
-            else {
-                line = testLine;
-            }
-          }
+        var testLine = line + words[n] + ' ';
+        var testWidth = this.ctx.measureText(testLine).width;
+        if (testWidth > maxWidth) {
+          this.ctx.fillText(line, marginLeft, marginTop);
+          line = words[n] + ' ';
+          marginTop += lineHeight;
+        }else {
+          line = testLine;
+        }
+      }
 
       this.ctx.fillText(line, marginLeft, marginTop);
     },
