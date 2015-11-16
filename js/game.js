@@ -393,7 +393,7 @@
           break;
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
-          this._myDrawFunction('Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start', 250);
+          this._myDrawFunction('Hi! My name is Pendalf. And I have a question! What time is it? Adventure Time!', 250);
           break;
       }
     },
