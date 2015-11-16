@@ -381,23 +381,19 @@
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           console.log('you have won!');
-          var text = 'Congratulations! Amazing! You are a true wizard!';
-          this._myDrawFunction(text, 250);
+          this._myDrawFunction('Congratulations! Amazing! You are a true wizard!', 250);
           break;
         case Verdict.FAIL:
           console.log('you have failed!');
-          var text = 'Keep calm and try again! You FAILED!';
-          this._myDrawFunction(text, 250);
+          this._myDrawFunction('Keep calm and try again! You FAILED!', 250);
           break;
         case Verdict.PAUSE:
           console.log('game is on pause!');
-          var text = 'Oops! Game on pause. Press Space to return';
-          this._myDrawFunction(text, 250);
+          this._myDrawFunction('Oops! Game on pause. Press Space to return', 250);
           break;
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
-          var text = 'Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start';
-          this._myDrawFunction(text, 250);
+          this._myDrawFunction('Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start', 250);
           break;
       }
     },
@@ -412,7 +408,6 @@
       this.ctx.lineTo(320, 110);
       this.ctx.closePath();
       this.ctx.fill();
-
       this.ctx.strokeStyle = '#000';
       this.ctx.fillStyle = '#fff';
       this.ctx.beginPath();
@@ -424,7 +419,6 @@
       this.ctx.closePath();
       this.ctx.fill();
       this.ctx.stroke();
-
       this.ctx.fillStyle = '#000';
       this.ctx.font = '16px PT Mono';
       var line = '';
