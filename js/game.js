@@ -381,27 +381,23 @@
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           console.log('you have won!');
-          var maxWidth = 250;
-          var text  = 'Congratulations! Amazing! You are a true wizard!';
-          this._myDrawFunction(text, maxWidth);
+          var text = 'Congratulations! Amazing! You are a true wizard!';
+          this._myDrawFunction(text, 250);
           break;
         case Verdict.FAIL:
           console.log('you have failed!');
-          var maxWidth = 250;
-          var text  = 'Keep calm and try again! You FAILED!';
-          this._myDrawFunction(text, maxWidth);
+          var text = 'Keep calm and try again! You FAILED!';
+          this._myDrawFunction(text, 250);
           break;
         case Verdict.PAUSE:
           console.log('game is on pause!');
-          var maxWidth = 250;
-          var text  = 'Oops! Game on pause. Press Space to return';
-          this._myDrawFunction(text, maxWidth);
+          var text = 'Oops! Game on pause. Press Space to return';
+          this._myDrawFunction(text, 250);
           break;
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
-          var maxWidth = 250;
-          var text  = 'Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start';
-          this._myDrawFunction(text, maxWidth);
+          var text = 'Hi! My name is Pendalf. And I have a question! Adventure Time! Press Space to start';
+          this._myDrawFunction(text, 250);
           break;
       }
     },
