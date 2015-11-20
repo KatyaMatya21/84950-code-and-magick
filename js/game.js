@@ -381,17 +381,81 @@
       switch (this.state.currentStatus) {
         case Verdict.WIN:
           console.log('you have won!');
+          this._myDrawFunction('Congratulations! Amazing! You are a true wizard!', 250);
           break;
         case Verdict.FAIL:
           console.log('you have failed!');
+          this._myDrawFunction('Keep calm and try again! You FAILED!', 250);
           break;
         case Verdict.PAUSE:
           console.log('game is on pause!');
+          this._myDrawFunction('Oops! Game on pause. Press Space to return', 250);
           break;
         case Verdict.INTRO:
           console.log('welcome to the game! Press Space to start');
+          this._myDrawFunction('Hi! My name is Pendalf. And I have a question! What time is it? Adventure Time!', 250);
           break;
       }
+    },
+
+    _myDrawFunction: function(text, maxWidth) {
+      var srtNumb = 1;
+      var line = '';
+      var words = text.split(' ');
+      var countWords = words.length;
+      this.ctx.font = '16px PT Mono';
+
+      for (var n = 0; n < countWords; n++) {
+        var testLine = line + words[n] + ' ';
+        var testWidth = this.ctx.measureText(testLine).width;
+        if (testWidth > maxWidth) {
+          line = words[n] + ' ';
+          srtNumb = srtNumb + 1;
+        }else {
+          line = testLine;
+        }
+      }
+
+      var canvasH = 20 + 20 + 25 * srtNumb - 25;
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      this.ctx.beginPath();
+      this.ctx.moveTo(320, 110);
+      this.ctx.lineTo(610, 110);
+      this.ctx.lineTo(610, 110 + canvasH);
+      this.ctx.lineTo(310, 110 + canvasH + 20);
+      this.ctx.lineTo(320, 110);
+      this.ctx.closePath();
+      this.ctx.fill();
+      this.ctx.strokeStyle = '#000';
+      this.ctx.fillStyle = '#fff';
+      this.ctx.beginPath();
+      this.ctx.moveTo(310, 100);
+      this.ctx.lineTo(600, 100);
+      this.ctx.lineTo(600, 100 + canvasH);
+      this.ctx.lineTo(300, 100 + canvasH + 20);
+      this.ctx.lineTo(310, 100);
+      this.ctx.closePath();
+      this.ctx.fill();
+      this.ctx.stroke();
+      this.ctx.fillStyle = '#000';
+      var marginLeft = 330;
+      var marginTop = 130;
+      var lineHeight = 25;
+      line = '';
+
+      for (var k = 0; k < countWords; k++) {
+        testLine = line + words[k] + ' ';
+        testWidth = this.ctx.measureText(testLine).width;
+        if (testWidth > maxWidth) {
+          this.ctx.fillText(line, marginLeft, marginTop);
+          line = words[k] + ' ';
+          marginTop += lineHeight;
+        }else {
+          line = testLine;
+        }
+      }
+
+      this.ctx.fillText(line, marginLeft, marginTop);
     },
 
     /**
