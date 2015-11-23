@@ -20,6 +20,13 @@
   var userReview = document.querySelector('.review-form-field-text');
   var sendReview = document.querySelector('.review-submit');
 
+  if ( docCookies.getItem('user') && docCookies.getItem('mark') ) {
+    var number = docCookies.getItem('mark');
+    var targetRadio = document.querySelector('.review-form-group-mark input[value="' + number + '"]');
+    userName.value = docCookies.getItem('user');
+    targetRadio.checked = true;
+  }
+
   function formValid() {
     sendReview.disabled = true;
     document.querySelector('.review-fields').style.display = 'inline-block';
@@ -63,5 +70,16 @@
     }else {
       document.querySelector('.review-fields-text').style.display = 'none';
     }
+  };
+
+  document.querySelector('.review-form').onsubmit = function(evt) {
+    evt.preventDefault();
+    var userMarkActive = document.querySelector('input[name="review-mark"]:checked');
+    var dateToExpire = +Date.now() + 1000 * 60 * 60 * 24 * 180;
+    var formattedDateToExpire = new Date(dateToExpire).toUTCString();
+    document.cookie = 'user=' + userName.value + ';expires=' + formattedDateToExpire;
+    document.cookie = 'mark=' + userMarkActive.value + ';expires=' + formattedDateToExpire;
+
+    document.querySelector('.review-form').submit();
   };
 })();
