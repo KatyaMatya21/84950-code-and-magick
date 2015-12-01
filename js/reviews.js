@@ -7,6 +7,10 @@
   var activeFilter = 'filter-all';
   var loadedReviews = [];
   var reviewsContainer = document.querySelector('.reviews');
+  var currentPage = 0;
+  var PAGE_SIZE = 3;
+  var filteredReviews = [];
+  var moreReviews = document.querySelector('.reviews-controls-more');
 
   for (var i = 0; i < filters.length; i++ ) {
     filters[i].onclick = function(evt) {
@@ -17,20 +21,47 @@
 
   filterBlock.classList.add('invisible');
 
+  // подгрузка отзывов по скроллу
+  /*window.addEventListener('scroll', function() {
+    // определяем положение футера относительно экрана
+    var footerCoordinates = document.querySelector('footer').getBoundingClientRect();
+    // высота экрана
+    var viewportSize = window.innerHeight;
+    if (footerCoordinates.bottom - viewportSize <= footerCoordinates.height) {
+      if (currentPage < Math.ceil(filteredReviews.length / PAGE_SIZE)) {
+        renderReviews(filteredReviews, ++currentPage);
+      }
+    }
+  });*/
+
+  moreReviews.onclick = function() {
+    if (currentPage < Math.ceil(filteredReviews.length / PAGE_SIZE)) {
+      renderReviews(filteredReviews, ++currentPage);
+    }
+  };
+
   getReviews();
 
   /**
    * Отрисовка списка отзывов
-   * @param {Array} reviews
+   * @param reviews
+   * @param pageNumber
+   * @param replace
    */
-  function renderReviews(reviews) {
-    container.innerHTML = '';
-    var fragment = document.createDocumentFragment();
+  function renderReviews(reviews, pageNumber, replace) {
+    if (replace) {
+      container.innerHTML = '';
+    }
 
-    reviews.forEach(function(review, index) {
+    var fragment = document.createDocumentFragment();
+    var from = pageNumber * PAGE_SIZE;
+    var to = from + PAGE_SIZE;
+    var pageReviews = reviews.slice(from, to);
+
+    pageReviews.forEach(function(review, index) {
       var element = getElementFromTemplate(review);
       fragment.appendChild(element);
-      if (index === reviews.length - 1) {
+      if (index === pageReviews.length - 1) {
         filterBlock.classList.remove('invisible');
       }
     });
@@ -48,7 +79,8 @@
       var rawData = evt.target.response;
       loadedReviews = JSON.parse(rawData);
       // Отрисовка загруженных данных
-      renderReviews(loadedReviews);
+      filteredReviews = loadedReviews.slice(0);
+      renderReviews(loadedReviews, 0, true);
       reviewsContainer.classList.remove('reviews-list-loading');
     };
     xhr.onerror = function() {
@@ -68,7 +100,8 @@
     }
 
     // Сортировка и фильтрация
-    var filteredReviews = loadedReviews.slice(0);
+    currentPage = 0;
+    filteredReviews = loadedReviews.slice(0);
 
     switch (id) {
       case 'reviews-all':
@@ -108,7 +141,7 @@
         break;
     }
 
-    renderReviews(filteredReviews);
+    renderReviews(filteredReviews, 0, true);
   }
 
   /**
