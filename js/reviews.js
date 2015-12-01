@@ -3,7 +3,7 @@
 
   var container = document.querySelector('.reviews-list');
   var filterBlock = document.querySelector('.reviews-filter');
-  var filters = document.querySelectorAll('.reviews-filter input');
+ /* var filters = document.querySelectorAll('.reviews-filter input');*/
   var activeFilter = 'filter-all';
   var loadedReviews = [];
   var reviewsContainer = document.querySelector('.reviews');
@@ -12,12 +12,13 @@
   var filteredReviews = [];
   var moreReviews = document.querySelector('.reviews-controls-more');
 
-  for (var i = 0; i < filters.length; i++ ) {
-    filters[i].onclick = function(evt) {
-      var clickedElementID = evt.target.id;
+  filterBlock.addEventListener('click', function(evt) {
+    var target = evt.target;
+    if (target.tagName === 'INPUT') {
+      var clickedElementID = target.id;
       setActiveFilter(clickedElementID);
-    };
-  }
+    }
+  });
 
   filterBlock.classList.add('invisible');
 
