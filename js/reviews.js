@@ -3,7 +3,6 @@
 
   var container = document.querySelector('.reviews-list');
   var filterBlock = document.querySelector('.reviews-filter');
- /* var filters = document.querySelectorAll('.reviews-filter input');*/
   var activeFilter = 'filter-all';
   var loadedReviews = [];
   var reviewsContainer = document.querySelector('.reviews');
@@ -21,19 +20,6 @@
   });
 
   filterBlock.classList.add('invisible');
-
-  // подгрузка отзывов по скроллу
-  /*window.addEventListener('scroll', function() {
-    // определяем положение футера относительно экрана
-    var footerCoordinates = document.querySelector('footer').getBoundingClientRect();
-    // высота экрана
-    var viewportSize = window.innerHeight;
-    if (footerCoordinates.bottom - viewportSize <= footerCoordinates.height) {
-      if (currentPage < Math.ceil(filteredReviews.length / PAGE_SIZE)) {
-        renderReviews(filteredReviews, ++currentPage);
-      }
-    }
-  });*/
 
   moreReviews.onclick = function() {
     if (currentPage < Math.ceil(filteredReviews.length / PAGE_SIZE)) {
