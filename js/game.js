@@ -748,4 +748,38 @@
   var game = new Game(document.querySelector('.demo'));
   game.initializeLevelAndStart();
   game.setGameStatus(window.Game.Verdict.INTRO);
+
+  var scrollTimeout;
+  var flagCloud = true;
+  var flagDemo = false;
+
+  window.addEventListener('scroll', function() {
+    clearTimeout(scrollTimeout);
+    var scrolled = window.pageYOffset;
+    var clouds = document.querySelector('.header-clouds');
+    var demo = document.querySelector('.demo');
+    var demoCoordinates = demo.getBoundingClientRect();
+    var cloudsCoordinates = clouds.getBoundingClientRect();
+
+    if (flagCloud) {
+      clouds.style.backgroundPositionX = scrolled + 'px';
+    }
+
+    if (flagDemo) {
+      game.setGameStatus(window.Game.Verdict.PAUSE);
+    }
+
+    scrollTimeout = setTimeout(function() {
+      if (scrolled > cloudsCoordinates.height) {
+        flagCloud = false;
+      } else {
+        flagCloud = true;
+      }
+      if (demoCoordinates.bottom > 0) {
+        flagDemo = false;
+      } else {
+        flagDemo = true;
+      }
+    }, 100);
+  });
 })();
