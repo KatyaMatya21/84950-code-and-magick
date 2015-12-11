@@ -1,4 +1,4 @@
-/* global Review: true */
+/* global Review: true, Gallery: true */
 
 'use strict';
 (function() {
@@ -12,6 +12,19 @@
   var PAGE_SIZE = 3;
   var filteredReviews = [];
   var moreReviews = document.querySelector('.reviews-controls-more');
+  var gallery = new Gallery();
+  var galleryBlock = document.querySelector('.photogallery');
+
+  /**
+   * Галерея
+   */
+  galleryBlock.addEventListener('click', function(evt) {
+    var targetPhoto = evt.target;
+    if (targetPhoto.tagName === 'IMG') {
+      evt.preventDefault();
+      gallery.show();
+    }
+  });
 
   filterBlock.addEventListener('click', function(evt) {
     var target = evt.target;
