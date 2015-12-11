@@ -1,3 +1,5 @@
+/* global Review: true */
+
 'use strict';
 (function() {
 
@@ -37,6 +39,10 @@
    */
   function renderReviews(reviews, pageNumber, replace) {
     if (replace) {
+      var renderedElements = container.querySelectorAll('.review');
+      [].forEach.call(renderedElements, function(el) {
+        container.removeChild(el);
+      });
       container.innerHTML = '';
     }
 
@@ -46,8 +52,9 @@
     var pageReviews = reviews.slice(from, to);
 
     pageReviews.forEach(function(review, index) {
-      var element = getElementFromTemplate(review);
-      fragment.appendChild(element);
+      var reviewElement = new Review(review);
+      reviewElement.render();
+      fragment.appendChild(reviewElement.element);
       if (index === pageReviews.length - 1) {
         filterBlock.classList.remove('invisible');
       }
@@ -131,44 +138,4 @@
     renderReviews(filteredReviews, 0, true);
   }
 
-  /**
-   * Создание блока по шаблону
-   * @param data
-   * @returns {*}
-   */
-  function getElementFromTemplate(data) {
-    var template = document.querySelector('#review-template');
-    var element;
-
-    if ('content' in template) {
-      element = template.content.children[0].cloneNode(true);
-    } else {
-      element = template.children[0].cloneNode(true);
-    }
-
-    element.querySelector('.review-rating').textContent = data.rating;
-    element.querySelector('.review-text').textContent = data.description;
-    var authorImage = new Image();
-    var IMAGE_TIMEOUT = 10000;
-    var imageLoadTimeout = setTimeout(function() {
-      authorImage.src = '';
-      element.classList.add('review-load-failure');
-    }, IMAGE_TIMEOUT);
-    authorImage.onload = function() {
-      clearTimeout(imageLoadTimeout);
-      var oldImg = element.querySelector('.review-author');
-      element.replaceChild(authorImage, oldImg);
-    };
-    authorImage.onerror = function() {
-      clearTimeout(imageLoadTimeout);
-      element.classList.add('review-load-failure');
-    };
-    authorImage.src = data.author.picture;
-    authorImage.title = data.author.name;
-    authorImage.style.width = '124px';
-    authorImage.style.height = '124px';
-    authorImage.classList.add('review-author');
-
-    return element;
-  }
 })();
