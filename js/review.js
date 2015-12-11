@@ -21,7 +21,12 @@
       this.element = template.children[0].cloneNode(true);
     }
 
-    this.element.querySelector('.review-rating').textContent = this._data.rating;
+    var reviewRating = this.element.querySelector('.review-rating');
+
+    for (var i = 2; i <= this._data.rating; i++) {
+      var reviewRatingClone = reviewRating.cloneNode(true);
+      this.element.insertBefore(reviewRatingClone, reviewRating);
+    }
     this.element.querySelector('.review-text').textContent = this._data.description;
     var authorImage = new Image();
     var IMAGE_TIMEOUT = 10000;
