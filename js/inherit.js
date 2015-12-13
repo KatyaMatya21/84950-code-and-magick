@@ -1,4 +1,3 @@
-/* exported inherit */
 
 'use strict';
 
@@ -8,4 +7,5 @@ function inherit(child, parent) {
   child.prototype = new EmptyConstructor();
 }
 
+inherit();
 
