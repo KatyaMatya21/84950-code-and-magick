@@ -380,19 +380,15 @@
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
           this._myDrawFunction('Congratulations! Amazing! You are a true wizard!', 250);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
           this._myDrawFunction('Keep calm and try again! You FAILED!', 250);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
           this._myDrawFunction('Oops! Game on pause. Press Space to return', 250);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
           this._myDrawFunction('Hi! My name is Pendalf. And I have a question! What time is it? Adventure Time!', 250);
           break;
       }
