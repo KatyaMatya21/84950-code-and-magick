@@ -1,3 +1,5 @@
+/* exported inherit */
+
 'use strict';
 
 function inherit(child, parent) {
@@ -5,3 +7,5 @@ function inherit(child, parent) {
   EmptyConstructor.prototype = parent.prototype;
   child.prototype = new EmptyConstructor();
 }
+
+
