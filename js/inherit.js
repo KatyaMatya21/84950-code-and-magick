@@ -8,4 +8,3 @@ function inherit(child, parent) {
 }
 
 inherit();
-
