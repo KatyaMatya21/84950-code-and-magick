@@ -3,19 +3,53 @@
 'use strict';
 (function() {
 
+  /**
+   * @type {Element}
+   */
   var container = document.querySelector('.reviews-list');
+  /**
+   * @type {Element}
+   */
   var filterBlock = document.querySelector('.reviews-filter');
+  /**
+   * @type {string}
+   */
   var activeFilter = 'filter-all';
+  /**
+   * @type {Array}
+   */
   var loadedReviews = [];
+  /**
+   * @type {Element}
+   */
   var reviewsContainer = document.querySelector('.reviews');
+  /**
+   * @type {number}
+   */
   var currentPage = 0;
+  /**
+   * @type {number}
+   */
   var PAGE_SIZE = 3;
+  /**
+   * @type {Array}
+   */
   var filteredReviews = [];
+  /**
+   * @type {Element}
+   */
   var moreReviews = document.querySelector('.reviews-controls-more');
+  /**
+   * @type {Gallery}
+   */
   var gallery = new Gallery();
+  /**
+   * @type {Element}
+   */
   var galleryBlock = document.querySelector('.photogallery');
 
   /**
+   * Обработчик по клику
    * Галерея
    */
   galleryBlock.addEventListener('click', function(evt) {
@@ -26,6 +60,10 @@
     }
   });
 
+  /**
+   * Обработчик по клику
+   * Фильтры отзывов
+   */
   filterBlock.addEventListener('click', function(evt) {
     var target = evt.target;
     if (target.tagName === 'INPUT') {
@@ -36,6 +74,10 @@
 
   filterBlock.classList.add('invisible');
 
+  /**
+   * Обработчик по клику
+   * Подгрузка больше отзывов
+   */
   moreReviews.onclick = function() {
     if (currentPage < Math.ceil(filteredReviews.length / PAGE_SIZE)) {
       renderReviews(filteredReviews, ++currentPage);
@@ -46,9 +88,9 @@
 
   /**
    * Отрисовка списка отзывов
-   * @param reviews
-   * @param pageNumber
-   * @param replace
+   * @param {Array} reviews
+   * @param {number} pageNumber
+   * @param {boolean} replace
    */
   function renderReviews(reviews, pageNumber, replace) {
     if (replace) {
@@ -58,13 +100,18 @@
       });
       container.innerHTML = '';
     }
-
+    /**
+     * @type {DocumentFragment}
+     */
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
     var pageReviews = reviews.slice(from, to);
 
     pageReviews.forEach(function(review, index) {
+      /**
+       * @type {Review}
+       */
       var reviewElement = new Review(review);
       reviewElement.render();
       fragment.appendChild(reviewElement.element);
@@ -82,6 +129,9 @@
     var xhr = new XMLHttpRequest();
     reviewsContainer.classList.add('reviews-list-loading');
     xhr.open('GET', 'data/reviews.json');
+    /**
+     * Обработчик по загрузке
+     */
     xhr.onload = function(evt) {
       var rawData = evt.target.response;
       loadedReviews = JSON.parse(rawData);
@@ -90,6 +140,9 @@
       renderReviews(loadedReviews, 0, true);
       reviewsContainer.classList.remove('reviews-list-loading');
     };
+    /**
+     * Обработчик по ошибке
+     */
     xhr.onerror = function() {
       reviewsContainer.classList.add('reviews-load-failure');
     };
@@ -150,5 +203,4 @@
 
     renderReviews(filteredReviews, 0, true);
   }
-
 })();
