@@ -3,7 +3,7 @@
 (function() {
 
   /**
-   * Галерея
+   * Конструктор Галерея
    * @constructor
    */
   var Gallery = function() {
