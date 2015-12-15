@@ -1,4 +1,4 @@
-/* global Review: true, Gallery: true */
+/* global Review: true, Gallery: true, Photo: true, ReviewData: true */
 
 'use strict';
 (function() {
@@ -48,6 +48,18 @@
    */
   var galleryBlock = document.querySelector('.photogallery');
 
+  function initGallery() {
+    var galleryList = document.querySelectorAll('.photogallery-image img');
+    var photoList = [];
+    [].map.call( galleryList, function(photoItem) {
+      var url = photoItem.src;
+      var photo = new Photo();
+      photo.setUrl(url);
+      photoList.push(photo);
+    });
+    gallery.setPictures(photoList);
+  }
+
   /**
    * Обработчик по клику
    * Галерея
@@ -56,6 +68,16 @@
     var targetPhoto = evt.target;
     if (targetPhoto.tagName === 'IMG') {
       evt.preventDefault();
+
+      targetPhoto = targetPhoto.parentNode;
+      var allPhotos = galleryBlock.querySelectorAll('a.photogallery-image');
+      for ( var i = 0; i < allPhotos.length; i++ ) {
+        if ( targetPhoto === allPhotos[i] ) {
+          gallery.setCurrentPicture(i);
+          break;
+        }
+      }
+
       gallery.show();
     }
   });
@@ -84,6 +106,7 @@
     }
   };
 
+  initGallery();
   getReviews();
 
   /**
