@@ -136,13 +136,9 @@
     var to = from + PAGE_SIZE;
     var pageReviews = reviews.slice(from, to);
 
-    pageReviews.forEach(function(review, index) {
-      /**
-       * @type {Review}
-       */
-      var reviewElement = new Review(review);
-      reviewElement.render();
-      fragment.appendChild(reviewElement.element);
+    pageReviews.forEach(function(reviewInfo, index) {
+      reviewInfo.render();
+      fragment.appendChild(reviewInfo.element);
       if (index === pageReviews.length - 1) {
         filterBlock.classList.remove('invisible');
       }
@@ -163,6 +159,12 @@
     xhr.onload = function(evt) {
       var rawData = evt.target.response;
       loadedReviews = JSON.parse(rawData);
+
+      loadedReviews = loadedReviews.map(function(review) {
+        var newReview = new Review();
+        newReview.setData(review);
+        return newReview;
+      });
       // Отрисовка загруженных данных
       filteredReviews = loadedReviews.slice(0);
       renderReviews(loadedReviews, 0, true);
@@ -196,30 +198,30 @@
         break;
       case 'reviews-recent':
         filteredReviews = filteredReviews.filter(function(a) {
-          var date = new Date(a.date);
+          var date = new Date(a.getDate());
           var dateCmp = new Date(Date.now() - 60 * 60 * 24 * 182 * 1000);
           return date >= dateCmp;
         });
         filteredReviews = filteredReviews.sort(function(a, b) {
-          var dateA = new Date(a.date);
-          var dateB = new Date(b.date);
+          var dateA = new Date(a.getDate());
+          var dateB = new Date(b.getDate());
           return dateB - dateA;
         });
         break;
       case 'reviews-good':
         filteredReviews = filteredReviews.filter(function(a) {
-          return a.rating >= 3;
+          return a.getRating() >= 3;
         });
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return b.rating - a.rating;
+          return b.getRating() - a.getRating();
         });
         break;
       case 'reviews-bad':
         filteredReviews = filteredReviews.filter(function(a) {
-          return a.rating <= 2;
+          return a.getRating() <= 2;
         });
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return a.rating - b.rating;
+          return a.getRating() - b.getRating();
         });
         break;
       case 'reviews-popular':
