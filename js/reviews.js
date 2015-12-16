@@ -1,4 +1,4 @@
-/* global Review: true, Gallery: true, Photo: true, ReviewData: true */
+/* global Review: true, Gallery: true, Photo: true, Video: true, ReviewData: true */
 
 'use strict';
 (function() {
@@ -52,10 +52,17 @@
     var galleryList = document.querySelectorAll('.photogallery-image img');
     var photoList = [];
     [].map.call( galleryList, function(photoItem) {
-      var url = photoItem.src;
-      var photo = new Photo();
-      photo.setUrl(url);
-      photoList.push(photo);
+      if (!(photoItem.parentNode.dataset.replacementVideo)) {
+        var url = photoItem.src;
+        var photo = new Photo();
+        photo.setUrl(url);
+        photoList.push(photo);
+      } else {
+        var src = photoItem.parentNode.dataset.replacementVideo;
+        var video = new Video();
+        video.setUrl(src);
+        photoList.push(video);
+      }
     });
     gallery.setPictures(photoList);
   }
@@ -68,7 +75,6 @@
     var targetPhoto = evt.target;
     if (targetPhoto.tagName === 'IMG') {
       evt.preventDefault();
-
       targetPhoto = targetPhoto.parentNode;
       var allPhotos = galleryBlock.querySelectorAll('a.photogallery-image');
       for ( var i = 0; i < allPhotos.length; i++ ) {
@@ -77,7 +83,6 @@
           break;
         }
       }
-
       gallery.show();
     }
   });
