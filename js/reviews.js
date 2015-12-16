@@ -36,6 +36,10 @@
    */
   var filteredReviews = [];
   /**
+   * @type {Array}
+   */
+  var pageReviews = [];
+  /**
    * @type {Element}
    */
   var moreReviews = document.querySelector('.reviews-controls-more');
@@ -51,7 +55,7 @@
   function initGallery() {
     var galleryList = document.querySelectorAll('.photogallery-image img');
     var photoList = [];
-    [].map.call( galleryList, function(photoItem) {
+    Array.prototype.map.call( galleryList, function(photoItem) {
       if (!(photoItem.parentNode.dataset.replacementVideo)) {
         var url = photoItem.src;
         var photo = new Photo();
@@ -114,27 +118,26 @@
   initGallery();
   getReviews();
 
+  function clearReviews() {
+    pageReviews.forEach(function(item) {
+      item.destroy();
+    });
+    container.innerHTML = '';
+  }
+
   /**
    * Отрисовка списка отзывов
    * @param {Array} reviews
    * @param {number} pageNumber
-   * @param {boolean} replace
    */
-  function renderReviews(reviews, pageNumber, replace) {
-    if (replace) {
-      var renderedElements = container.querySelectorAll('.review');
-      [].forEach.call(renderedElements, function(el) {
-        container.removeChild(el);
-      });
-      container.innerHTML = '';
-    }
+  function renderReviews(reviews, pageNumber) {
     /**
      * @type {DocumentFragment}
      */
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
-    var pageReviews = reviews.slice(from, to);
+    pageReviews = reviews.slice(from, to);
 
     pageReviews.forEach(function(reviewInfo, index) {
       reviewInfo.render();
@@ -167,7 +170,7 @@
       });
       // Отрисовка загруженных данных
       filteredReviews = loadedReviews.slice(0);
-      renderReviews(loadedReviews, 0, true);
+      renderReviews(loadedReviews, 0);
       reviewsContainer.classList.remove('reviews-list-loading');
     };
     /**
@@ -188,6 +191,8 @@
     if (activeFilter === id) {
       return;
     }
+
+    clearReviews();
 
     // Сортировка и фильтрация
     currentPage = 0;
@@ -226,11 +231,11 @@
         break;
       case 'reviews-popular':
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return b['review-rating'] - a['review-rating'];
+          return b.getReviewRating() - a.getReviewRating();
         });
         break;
     }
 
-    renderReviews(filteredReviews, 0, true);
+    renderReviews(filteredReviews, 0);
   }
 })();

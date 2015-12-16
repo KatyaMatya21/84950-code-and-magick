@@ -6,6 +6,7 @@
   /**
    * Конструктор Video
    * @constructor
+   * @extends {Photo)
    */
   var Video = function() {
     this.type = 'video';

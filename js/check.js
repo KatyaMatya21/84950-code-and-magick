@@ -14,11 +14,11 @@ function getMessage(a, b) {
 
     if ( Array.isArray(a) && !Array.isArray(b)) {
         var sum = 0;
-        var size = a.length;
-        for (var i = 0; i < size; i++) {
 
-            sum = sum + a[i];
-        }
+        a.forEach( function(item) {
+            sum = sum + item;
+        });
+
         return 'Я прошел ' + sum + ' шагов';
     }
 
@@ -28,10 +28,10 @@ function getMessage(a, b) {
         var size = a.length;
 
         for (var i = 0; i < size; i++) {
-
             summa = a[i] * b[i];
             length = length + summa;
         }
+
         return 'Я прошел ' + length + ' метров';
     }
 }

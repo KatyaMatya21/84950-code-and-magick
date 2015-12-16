@@ -18,6 +18,14 @@
     return this._data.rating;
   };
 
+  ReviewData.prototype.setReviewRating = function(rating) {
+    this._data['review-rating'] = rating;
+  };
+
+  ReviewData.prototype.getReviewRating = function() {
+    return this._data['review-rating'];
+  };
+
   ReviewData.prototype.getDate = function() {
     return this._data.date;
   };

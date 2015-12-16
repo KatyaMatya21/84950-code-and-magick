@@ -5,11 +5,9 @@
   /**
    * Конструктор Отзыв
    * @constructor
-   * @extends {ReviewDate)
+   * @extends {ReviewData)
    */
-  function Review() {
-
-  }
+  function Review() {}
 
   Review.prototype = new ReviewData();
 
@@ -68,6 +66,32 @@
     authorImage.style.width = '124px';
     authorImage.style.height = '124px';
     authorImage.classList.add('review-author');
+
+    // Добавление обработчиков по клику на элементы голосования
+    this.element.querySelector('.review-quiz-answer-yes').addEventListener('click', this.onPositiveReviewClick.bind(this));
+    this.element.querySelector('.review-quiz-answer-no').addEventListener('click', this.onNegativeReviewClick.bind(this));
+  };
+
+  Review.prototype.onPositiveReviewClick = function() {
+    this.element.querySelector('.review-quiz-answer-no').classList.remove('review-quiz-answer-active');
+    var ratingBefore = this.getRating();
+    var ratingAfter = (ratingBefore + 1);
+    this.setReviewRating(ratingAfter);
+    this.element.querySelector('.review-quiz-answer-yes').classList.add('review-quiz-answer-active');
+  };
+
+  Review.prototype.onNegativeReviewClick = function() {
+    this.element.querySelector('.review-quiz-answer-yes').classList.remove('review-quiz-answer-active');
+    var ratingBefore = this.getRating();
+    var ratingAfter = (ratingBefore - 1);
+    this.setReviewRating(ratingAfter);
+    this.element.querySelector('.review-quiz-answer-no').classList.add('review-quiz-answer-active');
+  };
+
+  Review.prototype.destroy = function() {
+    this.element.parentNode.removeChild(this.element);
+    this.element.querySelector('.review-quiz-answer-yes').removeEventListener('click', this.onPositiveReviewClick.bind(this));
+    this.element.querySelector('.review-quiz-answer-no').removeEventListener('click', this.onNegativeReviewClick.bind(this));
   };
 
   window.Review = Review;
