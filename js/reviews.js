@@ -268,11 +268,9 @@ define( [
         });
         break;
     }
-
+    activeFilter = id;
     document.getElementById(activeFilter).setAttribute('checked', 'checked');
     renderReviews(filteredReviews, 0);
-
-    activeFilter = id;
     localStorage.setItem('activeFilter', id);
   }
 });
