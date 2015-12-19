@@ -69,6 +69,7 @@
       }
     });
     gallery.setPictures(photoList);
+    handleHash();
   }
 
   /**
@@ -83,13 +84,32 @@
       var allPhotos = galleryBlock.querySelectorAll('a.photogallery-image');
       for ( var i = 0; i < allPhotos.length; i++ ) {
         if ( targetPhoto === allPhotos[i] ) {
-          gallery.setCurrentPicture(i);
+          window.location.hash = 'photo/' + i;
           break;
         }
       }
-      gallery.show();
     }
   });
+
+  /**
+   * Обработчик изменения хэша
+   */
+  window.addEventListener('hashchange', handleHash);
+
+  /**
+   * Работа с хэшем
+   */
+  function handleHash() {
+    var hash = window.location.hash;
+    if (hash.length) {
+      hash = hash.match(/#photo\/(\S+)/);
+      if (hash.length > 1) {
+        var index = hash[1];
+        gallery.setCurrentPicture(index);
+        gallery.show();
+      }
+    }
+  }
 
   /**
    * Обработчик по клику
@@ -124,7 +144,7 @@
     });
     container.innerHTML = '';
     var allInputs = document.querySelectorAll('.reviews-filter input[type="checkbox"]');
-    [].forEach.call(allInputs, function(input) {
+    Array.prototype.forEach.call(allInputs, function(input) {
       input.removeAttribute('checked');
     });
   }

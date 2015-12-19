@@ -8,6 +8,7 @@
   var Photo = function() {
     this._url = null;
     this.type = 'photo';
+    this.name = '';
   };
 
   /**
@@ -15,6 +16,8 @@
    */
   Photo.prototype.setUrl = function(url) {
     this._url = url;
+    var urlArray = this._url.split('/');
+    this.name = urlArray[urlArray.length - 1];
   };
 
   /**
