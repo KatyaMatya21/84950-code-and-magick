@@ -1,16 +1,19 @@
+/* global ReviewData: true */
+
 'use strict';
 (function() {
   /**
    * Конструктор Отзыв
-   * @param {Array} data
    * @constructor
+   * @extends {ReviewData)
    */
-  function Review(data) {
-    this._data = data;
-  }
+  function Review() {}
+
+  Review.prototype = new ReviewData();
 
   /**
    * Создание элемента из шаблона
+   * @override
    */
   Review.prototype.render = function() {
     var template = document.querySelector('#review-template');
@@ -22,14 +25,14 @@
     }
     var reviewRating = this.element.querySelector('.review-rating');
 
-    for (var i = 2; i <= this._data.rating; i++) {
+    for (var i = 2; i <= this.getRating(); i++) {
       /**
        * @type {Node}
        */
       var reviewRatingClone = reviewRating.cloneNode(true);
       this.element.insertBefore(reviewRatingClone, reviewRating);
     }
-    this.element.querySelector('.review-text').textContent = this._data.description;
+    this.element.querySelector('.review-text').textContent = this.getDescription();
     var authorImage = new Image();
     /**
      * Постоянная таумаут
@@ -58,11 +61,37 @@
       this.element.classList.add('review-load-failure');
     }.bind(this);
 
-    authorImage.src = this._data.author.picture;
-    authorImage.title = this._data.author.name;
+    authorImage.src = this.getAuthorPicture();
+    authorImage.title = this.getAuthorName();
     authorImage.style.width = '124px';
     authorImage.style.height = '124px';
     authorImage.classList.add('review-author');
+
+    // Добавление обработчиков по клику на элементы голосования
+    this.element.querySelector('.review-quiz-answer-yes').addEventListener('click', this.onPositiveReviewClick.bind(this));
+    this.element.querySelector('.review-quiz-answer-no').addEventListener('click', this.onNegativeReviewClick.bind(this));
+  };
+
+  Review.prototype.onPositiveReviewClick = function() {
+    this.element.querySelector('.review-quiz-answer-no').classList.remove('review-quiz-answer-active');
+    var ratingBefore = this.getRating();
+    var ratingAfter = (ratingBefore + 1);
+    this.setReviewRating(ratingAfter);
+    this.element.querySelector('.review-quiz-answer-yes').classList.add('review-quiz-answer-active');
+  };
+
+  Review.prototype.onNegativeReviewClick = function() {
+    this.element.querySelector('.review-quiz-answer-yes').classList.remove('review-quiz-answer-active');
+    var ratingBefore = this.getRating();
+    var ratingAfter = (ratingBefore - 1);
+    this.setReviewRating(ratingAfter);
+    this.element.querySelector('.review-quiz-answer-no').classList.add('review-quiz-answer-active');
+  };
+
+  Review.prototype.destroy = function() {
+    this.element.parentNode.removeChild(this.element);
+    this.element.querySelector('.review-quiz-answer-yes').removeEventListener('click', this.onPositiveReviewClick.bind(this));
+    this.element.querySelector('.review-quiz-answer-no').removeEventListener('click', this.onNegativeReviewClick.bind(this));
   };
 
   window.Review = Review;

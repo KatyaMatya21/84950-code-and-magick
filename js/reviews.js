@@ -1,4 +1,4 @@
-/* global Review: true, Gallery: true */
+/* global Review: true, Gallery: true, Photo: true, Video: true */
 
 'use strict';
 (function() {
@@ -36,6 +36,10 @@
    */
   var filteredReviews = [];
   /**
+   * @type {Array}
+   */
+  var pageReviews = [];
+  /**
    * @type {Element}
    */
   var moreReviews = document.querySelector('.reviews-controls-more');
@@ -48,6 +52,25 @@
    */
   var galleryBlock = document.querySelector('.photogallery');
 
+  function initGallery() {
+    var galleryList = document.querySelectorAll('.photogallery-image img');
+    var photoList = [];
+    Array.prototype.map.call( galleryList, function(photoItem) {
+      if (!(photoItem.parentNode.dataset.replacementVideo)) {
+        var url = photoItem.src;
+        var photo = new Photo();
+        photo.setUrl(url);
+        photoList.push(photo);
+      } else {
+        var src = photoItem.parentNode.dataset.replacementVideo;
+        var video = new Video();
+        video.setUrl(src);
+        photoList.push(video);
+      }
+    });
+    gallery.setPictures(photoList);
+  }
+
   /**
    * Обработчик по клику
    * Галерея
@@ -56,6 +79,14 @@
     var targetPhoto = evt.target;
     if (targetPhoto.tagName === 'IMG') {
       evt.preventDefault();
+      targetPhoto = targetPhoto.parentNode;
+      var allPhotos = galleryBlock.querySelectorAll('a.photogallery-image');
+      for ( var i = 0; i < allPhotos.length; i++ ) {
+        if ( targetPhoto === allPhotos[i] ) {
+          gallery.setCurrentPicture(i);
+          break;
+        }
+      }
       gallery.show();
     }
   });
@@ -84,37 +115,33 @@
     }
   };
 
+  initGallery();
   getReviews();
+
+  function clearReviews() {
+    pageReviews.forEach(function(item) {
+      item.destroy();
+    });
+    container.innerHTML = '';
+  }
 
   /**
    * Отрисовка списка отзывов
    * @param {Array} reviews
    * @param {number} pageNumber
-   * @param {boolean} replace
    */
-  function renderReviews(reviews, pageNumber, replace) {
-    if (replace) {
-      var renderedElements = container.querySelectorAll('.review');
-      [].forEach.call(renderedElements, function(el) {
-        container.removeChild(el);
-      });
-      container.innerHTML = '';
-    }
+  function renderReviews(reviews, pageNumber) {
     /**
      * @type {DocumentFragment}
      */
     var fragment = document.createDocumentFragment();
     var from = pageNumber * PAGE_SIZE;
     var to = from + PAGE_SIZE;
-    var pageReviews = reviews.slice(from, to);
+    pageReviews = reviews.slice(from, to);
 
-    pageReviews.forEach(function(review, index) {
-      /**
-       * @type {Review}
-       */
-      var reviewElement = new Review(review);
-      reviewElement.render();
-      fragment.appendChild(reviewElement.element);
+    pageReviews.forEach(function(reviewInfo, index) {
+      reviewInfo.render();
+      fragment.appendChild(reviewInfo.element);
       if (index === pageReviews.length - 1) {
         filterBlock.classList.remove('invisible');
       }
@@ -135,9 +162,15 @@
     xhr.onload = function(evt) {
       var rawData = evt.target.response;
       loadedReviews = JSON.parse(rawData);
+
+      loadedReviews = loadedReviews.map(function(review) {
+        var newReview = new Review();
+        newReview.setData(review);
+        return newReview;
+      });
       // Отрисовка загруженных данных
       filteredReviews = loadedReviews.slice(0);
-      renderReviews(loadedReviews, 0, true);
+      renderReviews(loadedReviews, 0);
       reviewsContainer.classList.remove('reviews-list-loading');
     };
     /**
@@ -159,6 +192,8 @@
       return;
     }
 
+    clearReviews();
+
     // Сортировка и фильтрация
     currentPage = 0;
     filteredReviews = loadedReviews.slice(0);
@@ -168,39 +203,39 @@
         break;
       case 'reviews-recent':
         filteredReviews = filteredReviews.filter(function(a) {
-          var date = new Date(a.date);
+          var date = new Date(a.getDate());
           var dateCmp = new Date(Date.now() - 60 * 60 * 24 * 182 * 1000);
           return date >= dateCmp;
         });
         filteredReviews = filteredReviews.sort(function(a, b) {
-          var dateA = new Date(a.date);
-          var dateB = new Date(b.date);
+          var dateA = new Date(a.getDate());
+          var dateB = new Date(b.getDate());
           return dateB - dateA;
         });
         break;
       case 'reviews-good':
         filteredReviews = filteredReviews.filter(function(a) {
-          return a.rating >= 3;
+          return a.getRating() >= 3;
         });
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return b.rating - a.rating;
+          return b.getRating() - a.getRating();
         });
         break;
       case 'reviews-bad':
         filteredReviews = filteredReviews.filter(function(a) {
-          return a.rating <= 2;
+          return a.getRating() <= 2;
         });
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return a.rating - b.rating;
+          return a.getRating() - b.getRating();
         });
         break;
       case 'reviews-popular':
         filteredReviews = filteredReviews.sort(function(a, b) {
-          return b['review-rating'] - a['review-rating'];
+          return b.getReviewRating() - a.getReviewRating();
         });
         break;
     }
 
-    renderReviews(filteredReviews, 0, true);
+    renderReviews(filteredReviews, 0);
   }
 })();
