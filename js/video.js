@@ -1,8 +1,10 @@
-/* global Photo: true*/
+/* global define: true */
 
 'use strict';
 
-(function() {
+define([
+  'photo'
+], (function(Photo) {
   /**
    * Конструктор Video
    * @constructor
@@ -14,8 +16,8 @@
 
   Video.prototype = new Photo();
 
-  window.Video = Video;
-})();
+  return Video;
+}));
 
 
 

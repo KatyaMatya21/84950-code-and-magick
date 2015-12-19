@@ -1,6 +1,8 @@
+/* global define: true */
+
 'use strict';
 
-(function() {
+define((function() {
   /**
    * Конструктор Photo
    * @constructor
@@ -27,8 +29,8 @@
     return this._url;
   };
 
-  window.Photo = Photo;
-})();
+  return Photo;
+}));
 
 
 

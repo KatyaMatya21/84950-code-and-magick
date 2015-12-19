@@ -1,7 +1,19 @@
-/* global Review: true, Gallery: true, Photo: true, Video: true */
+/* global requirejs: true, define: true */
 
 'use strict';
-(function() {
+
+requirejs.config({
+  baseUrl: 'js'
+});
+
+define( [
+  'review',
+  'gallery',
+  'photo',
+  'video',
+  'game',
+  'form'
+], function(Review, Gallery, Photo, Video) {
 
   /**
    * @type {Element}
@@ -263,4 +275,4 @@
     activeFilter = id;
     localStorage.setItem('activeFilter', id);
   }
-})();
+});

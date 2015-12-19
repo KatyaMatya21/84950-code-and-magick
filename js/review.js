@@ -1,7 +1,10 @@
-/* global ReviewData: true */
+/* global define: true */
 
 'use strict';
-(function() {
+
+define([
+  'review-data'
+], (function(ReviewData) {
   /**
    * Конструктор Отзыв
    * @constructor
@@ -94,5 +97,5 @@
     this.element.querySelector('.review-quiz-answer-no').removeEventListener('click', this.onNegativeReviewClick.bind(this));
   };
 
-  window.Review = Review;
-})();
+  return Review;
+}));

@@ -1,6 +1,8 @@
+/* global define: true */
+
 'use strict';
 
-(function() {
+define((function() {
 
   /**
    * Конструктор Галерея
@@ -159,5 +161,5 @@
     this.element.querySelector('.preview-number-current').innerHTML = '' + (i + 1);
   };
 
-  window.Gallery = Gallery;
-})();
+  return Gallery;
+}));

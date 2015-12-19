@@ -1,14 +1,14 @@
+/* global define: true */
+
 'use strict';
 
-(function() {
+define([], (function() {
   /**
    * Конструктор ReviewData
    * @constructor
    */
 
-  var ReviewData = function() {
-
-  };
+  var ReviewData = function() {};
 
   ReviewData.prototype.setData = function(data) {
     this._data = data;
@@ -46,6 +46,6 @@
     return this.getAuthor().picture;
   };
 
-  window.ReviewData = ReviewData;
-})();
+  return ReviewData;
+}));
 
