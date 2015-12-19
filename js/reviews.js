@@ -14,7 +14,7 @@
   /**
    * @type {string}
    */
-  var activeFilter = 'filter-all';
+  var activeFilter = localStorage.getItem('activeFilter') || 'filter-all';
   /**
    * @type {Array}
    */
@@ -123,6 +123,10 @@
       item.destroy();
     });
     container.innerHTML = '';
+    var allInputs = document.querySelectorAll('.reviews-filter input[type="checkbox"]');
+    [].forEach.call(allInputs, function(input) {
+      input.removeAttribute('checked');
+    });
   }
 
   /**
@@ -170,7 +174,8 @@
       });
       // Отрисовка загруженных данных
       filteredReviews = loadedReviews.slice(0);
-      renderReviews(loadedReviews, 0);
+      setActiveFilter(activeFilter);
+      //renderReviews(loadedReviews, 0);
       reviewsContainer.classList.remove('reviews-list-loading');
     };
     /**
@@ -187,10 +192,6 @@
    * @param {string} id
    */
   function setActiveFilter(id) {
-    // Предотращение повторной установки того же фильтра
-    if (activeFilter === id) {
-      return;
-    }
 
     clearReviews();
 
@@ -236,6 +237,10 @@
         break;
     }
 
+    document.getElementById(activeFilter).setAttribute('checked', 'checked');
     renderReviews(filteredReviews, 0);
+
+    activeFilter = id;
+    localStorage.setItem('activeFilter', id);
   }
 })();
