@@ -29,6 +29,7 @@
   Gallery.prototype.hide = function() {
     this.element.classList.add('invisible');
     this.removeControls();
+    window.location.hash = '';
   };
 
   /**
@@ -60,7 +61,7 @@
     if (n < 0) {
       n = this._photos.length - 1;
     }
-    this.setCurrentPicture(n);
+    window.location.hash = 'photo/' + n;
   };
 
   /**
@@ -72,7 +73,7 @@
     if (n > this._photos.length - 1) {
       n = 0;
     }
-    this.setCurrentPicture(n);
+    window.location.hash = 'photo/' + n;
   };
 
   /**
@@ -111,6 +112,15 @@
    * @param {number} i
    */
   Gallery.prototype.setCurrentPicture = function(i) {
+    if ( isNaN(i) ) {
+      for ( var z = 0; z < this._photos.length; z++ ) {
+        if (this._photos[z].name === i) {
+          i = z;
+          break;
+        }
+      }
+    }
+    i = parseInt(i, 10);
     var currentImg = this.element.querySelector('.overlay-gallery-preview img');
     var currentVideo = this.element.querySelector('.overlay-gallery-preview video');
 
@@ -147,7 +157,6 @@
     }
 
     this.element.querySelector('.preview-number-current').innerHTML = '' + (i + 1);
-
   };
 
   window.Gallery = Gallery;
