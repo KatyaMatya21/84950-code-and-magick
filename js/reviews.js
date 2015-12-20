@@ -1,4 +1,4 @@
-/* global Review: true, Gallery: true, Photo: true, Video: true */
+/* global Review: true */
 
 'use strict';
 (function() {
