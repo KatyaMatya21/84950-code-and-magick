@@ -24,7 +24,7 @@ define( [
   /**
    * @type {string}
    */
-  var activeFilter = localStorage.getItem('activeFilter') || 'filter-all';
+  var activeFilter = localStorage.getItem('activeFilter') || 'reviews-all';
   /**
    * @type {Array}
    */
