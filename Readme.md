@@ -3,8 +3,6 @@
 [![Build status][travis-image]][travis-url]
 [![Dependency status][dependency-image]][dependency-url]
 
-* Студент: [Екатерина Климович](https://htmlacademy.ru/profile/id84950).
-* Наставник: `Иван Гунченко`.
 
 ### Немного о себе
 
