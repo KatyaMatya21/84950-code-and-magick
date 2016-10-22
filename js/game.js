@@ -401,6 +401,7 @@
       var countWords = words.length;
       this.ctx.font = '16px PT Mono';
 
+      // Подсчёт количества строк
       for (var n = 0; n < countWords; n++) {
         var testLine = line + words[n] + ' ';
         var testWidth = this.ctx.measureText(testLine).width;
@@ -412,13 +413,14 @@
         }
       }
 
-      var canvasH = 20 + 20 + 25 * srtNumb - 25;
+      // Отрисовка канваса
+      var canvasH = 20 + 20 + 25 * srtNumb - 25; // высота канваса
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
       this.ctx.moveTo(320, 110);
       this.ctx.lineTo(610, 110);
-      this.ctx.lineTo(610, 110 + canvasH);
-      this.ctx.lineTo(310, 110 + canvasH + 20);
+      this.ctx.lineTo(610, 110 + canvasH); 
+      this.ctx.lineTo(310, 110 + canvasH + 20); 
       this.ctx.lineTo(320, 110);
       this.ctx.closePath();
       this.ctx.fill();
@@ -439,6 +441,7 @@
       var lineHeight = 25;
       line = '';
 
+      // Отрисовка текста на канвасе с переносом строки 
       for (var k = 0; k < countWords; k++) {
         testLine = line + words[k] + ' ';
         testWidth = this.ctx.measureText(testLine).width;
