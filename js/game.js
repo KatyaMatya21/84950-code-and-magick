@@ -394,27 +394,29 @@
       }
     },
 
+    // Функция отрисовки сообщения мага
+    // Принимает на вход текст и максимальную ширину
     _myDrawFunction: function(text, maxWidth) {
-      var srtNumb = 1;
-      var line = '';
-      var words = text.split(' ');
-      var countWords = words.length;
-      this.ctx.font = '16px PT Mono';
+      var srtNumb = 1; // Количество строк текста в сообщении
+      var line = ''; 
+      var words = text.split(' '); // Разделяем текст по пробелам, получаем массив из слов
+      var countWords = words.length; // Количество слов, длина массива words
+      this.ctx.font = '16px PT Mono'; 
 
-      // Подсчёт количества строк
+      // Подсчёт количества строк сообщения (нужно для того, чтобы подгонять высоту канваса под высоту текста сообщения)
       for (var n = 0; n < countWords; n++) {
         var testLine = line + words[n] + ' ';
-        var testWidth = this.ctx.measureText(testLine).width;
-        if (testWidth > maxWidth) {
-          line = words[n] + ' ';
-          srtNumb = srtNumb + 1;
-        }else {
-          line = testLine;
+        var testWidth = this.ctx.measureText(testLine).width; // Считаем ширину строки
+        if (testWidth > maxWidth) { // Если ширина текущей строки больше максимально возможной ширины
+          line = words[n] + ' '; 
+          srtNumb = srtNumb + 1; // +1 к количеству строк
+        }else { // Если ширина текущей строки не больше максимально возможной ширины
+          line = testLine; // Записываем текущее состояние в line
         }
       }
 
       // Отрисовка канваса
-      var canvasH = 20 + 20 + 25 * srtNumb - 25; // высота канваса
+      var canvasH = 20 + 20 + 25 * srtNumb - 25; // высота канваса 
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
       this.ctx.beginPath();
       this.ctx.moveTo(320, 110);
@@ -443,14 +445,14 @@
 
       // Отрисовка текста на канвасе с переносом строки 
       for (var k = 0; k < countWords; k++) {
-        testLine = line + words[k] + ' ';
-        testWidth = this.ctx.measureText(testLine).width;
-        if (testWidth > maxWidth) {
-          this.ctx.fillText(line, marginLeft, marginTop);
-          line = words[k] + ' ';
-          marginTop += lineHeight;
-        }else {
-          line = testLine;
+        testLine = line + words[k] + ' '; // Записываем в testLine текущее состояние + текущее слово из массива words. На первом шаге line пустой.
+        testWidth = this.ctx.measureText(testLine).width; // Считаем ширину testLine
+        if (testWidth > maxWidth) { // Если ширина testLine больше максимальной ширины
+          this.ctx.fillText(line, marginLeft, marginTop); // Отрисовываем строку
+          line = words[k] + ' '; 
+          marginTop += lineHeight; // Сдвигаем точку, с которой будет происходить отрисовка следующей строки
+        }else { // Если ширина testLine не больше максимальной ширины
+          line = testLine; // Записываем текущее состояние строки в line
         }
       }
 
